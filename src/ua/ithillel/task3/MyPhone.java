@@ -5,18 +5,22 @@ import java.util.Comparator;
 import java.util.List;
 
 public class MyPhone {
-    public static MyPhoneBook phonebook;
+    public MyPhoneBook phonebook;
 
     MyPhone() {
         phonebook = new MyPhoneBook();
     }
 
-    static class MyPhoneBook {
+    private interface MyComparator {
+        void sort();
+    }
+
+    class MyPhoneBook {
 
         private List<MyPhoneBook.PhoneRecord> phoneNumbers = new ArrayList<>();
 
 
-        private static class PhoneRecord {
+        private  class PhoneRecord {
             private String name;
             private String phone;
 
@@ -51,7 +55,7 @@ public class MyPhone {
             }
         }
 
-        public List<MyPhoneBook.PhoneRecord> getPhonenumbers() {
+        public List<MyPhoneBook.PhoneRecord> getPhoneNumbers() {
             return phoneNumbers;
         }
 
@@ -66,14 +70,12 @@ public class MyPhone {
         }
 
 
-        private interface MyComparator {
-            void sort();
-        }
+
 
         private void sortByName() {
             MyComparator comp = new MyComparator() {
                 public void sort() {
-                    getPhonenumbers().sort(new Comparator<MyPhoneBook.PhoneRecord>() {
+                    getPhoneNumbers().sort(new Comparator<MyPhoneBook.PhoneRecord>() {
                         @Override
                         public int compare(MyPhoneBook.PhoneRecord o1, MyPhoneBook.PhoneRecord o2) {
                             return o1.getName().compareTo(o2.getName());
@@ -86,7 +88,7 @@ public class MyPhone {
 
         private void sortByPhoneNumber() {
             MyComparator comp = () -> {
-                getPhonenumbers().sort((o1, o2) -> o1.getPhone().compareTo(o2.getPhone()));
+                getPhoneNumbers().sort((o1, o2) -> o1.getPhone().compareTo(o2.getPhone()));
             };
             comp.sort();
         }
@@ -95,6 +97,7 @@ public class MyPhone {
     static class SimCard {
         private String providerName;
         private int memory;
+        private MyPhoneBook phonebook;
 
         public String getProviderName() {
             return providerName;
